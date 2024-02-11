@@ -1,6 +1,7 @@
-from datetime import datetime,timedelta
+from datetime import datetime, timedelta
 import csv
 import os
+import datetime
 
 def login():
     username = input("Enter username: ")
@@ -34,7 +35,7 @@ def add_book():
 
     # Check if the book already exists in the library
     if not is_book_present(book_id):
-        with open(BOOKS_CSV_FILE, 'a', newline='') as f:
+        with open(BOOKS_CSV_FILE, 'a', newline='\r\n') as f:
             writer = csv.writer(f)
             writer.writerow([book_id, book_name, author_name])
         print("Book Record Saved")
@@ -57,7 +58,7 @@ def edit_book():
     book_id_to_modify = input('Enter book ID whose record you want to modify: ')
 
     if is_book_present(book_id_to_modify):
-        with open(BOOKS_CSV_FILE, 'r', newline='') as f:
+        with open(BOOKS_CSV_FILE, 'r', newline='\r\n') as f:
             with open('temp.csv', 'w', newline='\r\n') as f_temp:
                 reader = csv.reader(f)
                 writer = csv.writer(f_temp)
@@ -97,8 +98,8 @@ def delete_book():
     book_id_to_delete = input('Enter book ID whose record you want to delete: ')
 
     if is_book_present(book_id_to_delete):
-        with open(BOOKS_CSV_FILE, 'r', newline='') as f:
-            with open('temp.csv', 'w', newline='') as f_temp:
+        with open(BOOKS_CSV_FILE, 'r', newline='\r\n') as f:
+            with open('temp.csv', 'w', newline='\r\n') as f_temp:
                 reader = csv.reader(f)
                 writer = csv.writer(f_temp)
 
@@ -132,7 +133,7 @@ def search_book():
     book_id_to_search = input('Enter book ID you want to search: ')
 
     if is_book_present(book_id_to_search):
-        with open(BOOKS_CSV_FILE, 'r', newline='') as f:
+        with open(BOOKS_CSV_FILE, 'r', newline='\r\n') as f:
             reader = csv.reader(f)
 
             for row in reader:
@@ -153,7 +154,7 @@ def show_all_books():
     print("List of All Books")
     print("=================")
 
-    with open(BOOKS_CSV_FILE, 'r', newline='') as f:
+    with open(BOOKS_CSV_FILE, 'r', newline='\r\n') as f:
         reader = csv.reader(f)
 
         for row in reader:
@@ -172,7 +173,7 @@ def issueBook():
     print("=====================")
     book_id = input("Enter book id to issue: ")
 
-    with open('library.csv', 'r', newline='') as f:
+    with open('library.csv', 'r', newline='\r\n') as f:
         reader = csv.reader(f)
         library_data = list(reader)
 
@@ -184,7 +185,7 @@ def issueBook():
             break
 
     if issued_book:
-        with open('issued_books.csv', 'a', newline='') as f_issued:
+        with open('issued_books.csv', 'a', newline='\r\n') as f_issued:
             writer = csv.writer(f_issued)
             issued_book.append(get_due_date())  # Add due date to the issued book record
             writer.writerow(issued_book)
@@ -202,7 +203,7 @@ def return_issued_book():
     print("=====================")
     book_id_to_return = input("Enter book ID to return: ")
 
-    with open(ISSUED_BOOKS_CSV_FILE, 'r', newline='') as f_issued:
+    with open(ISSUED_BOOKS_CSV_FILE, 'r', newline='\r\n') as f_issued:
         issued_books_data = list(csv.reader(f_issued))
 
     returned_book = next((book for book in issued_books_data if book[0] == book_id_to_return), None)
@@ -216,7 +217,7 @@ def return_issued_book():
         with open(ISSUED_BOOKS_CSV_FILE, 'w', newline='\r\n') as f_issued:
             csv.writer(f_issued).writerows(issued_books_data)
 
-        with open(BOOKS_CSV_FILE, 'a', newline='') as f_library:
+        with open(BOOKS_CSV_FILE, 'a', newline='\r\n') as f_library:
             csv.writer(f_library).writerow(returned_book[:-1])  # Remove the due date before returning to the library
     else:
         print("Book not found in the issued books records.")
@@ -304,7 +305,3 @@ while True:
     admin_panel()
 
  
-
-
-
-
